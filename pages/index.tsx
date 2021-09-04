@@ -24,7 +24,7 @@ const Home: NextPage = () => {
       <Header />
       <main className='my-10 mx-5 flex flex-col items-center'>
         <h1 className='sm:text-5xl text-4xl font-extrabold text-center md:mt-20 mt-8'>
-          Hashnode Dev Card
+          Hashnode Author Card
         </h1>
         <p className='text-gray-700 mt-5 text-center max-w-lg'>
           Generate awesome personalized cards which you can showcase to the
