@@ -11,9 +11,7 @@ export const Header = () => {
             height='32'
             width='32'
           />
-          <p className='inline-block text-2xl text-gray-900 font-bold'>
-            Author Card
-          </p>
+          <p className='inline-block text-2xl text-gray-900 font-bold'>Card</p>
         </a>
       </Link>
     </nav>
