@@ -94,6 +94,5 @@ export default async function FetchHashnodeData(
     photo,
     name,
   };
-  console.log(returnData);
   res.json(returnData);
 }

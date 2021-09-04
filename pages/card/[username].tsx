@@ -5,12 +5,16 @@ import { Header } from '../../components/Header';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import html2canvas from 'html2canvas';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const CardGeneratePage: NextPage = () => {
   const router = useRouter();
   const [user, setUser] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [imgLink, setImgLink] = useState('');
   const { username }: any = router.query;
 
   useEffect(() => {
@@ -30,13 +34,59 @@ const CardGeneratePage: NextPage = () => {
         setError(true);
       }
     };
-    fetchData();
+    if (!user.name) {
+      fetchData();
+    }
   });
-  console.log(user);
+
+  const onShare = async () => {
+    // @ts-ignore
+    let container: HTMLElement = document.querySelector('#hashnodeCard');
+    let base64Image: string = '';
+
+    // @ts-ignore
+    await html2canvas(container, {
+      useCORS: true,
+    }).then(function (canvas) {
+      base64Image = canvas.toDataURL('image/png').slice(22); // convert to dataURL
+    });
+    // upload the base64
+    const formData = new FormData();
+    // @ts-ignore
+    const key: string = process.env.NEXT_PUBLIC_IMGBB_STORAGE_KEY;
+    formData.append('image', base64Image);
+    formData.append('name', username);
+    formData.append('key', key);
+    const upload = axios
+      .post('https://api.imgbb.com/1/upload', formData)
+      .then((data) => {
+        navigator.clipboard.writeText(data.data.data.url);
+        setImgLink(data.data.data.url);
+      });
+    // @ts-ignore
+    toast.promise(upload, {
+      loading: 'Creating Shareable Image...',
+      success: 'Image URL copied to clipboard',
+      error: 'Error Creating Shareable Image',
+    });
+  };
+
+  const downloadImage = () => {
+    // @ts-ignore
+    let container: HTMLElement = document.querySelector('#hashnodeCard');
+    html2canvas(container).then(function (canvas) {
+      let link = document.createElement('a');
+      link.download = username + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.target = '_blank';
+      link.click();
+    });
+  };
   return (
     <>
       <Head>
         <title>Hashnode Card Generator - {username}</title>
+        <script async src='https://platform.twitter.com/widgets.js'></script>
       </Head>
       <Header />
       <main className='container mx-auto md:px-8 px-4 flex flex-col items-center py-4'>
@@ -64,6 +114,7 @@ const CardGeneratePage: NextPage = () => {
         <div className='relative'>
           <div
             style={{ width: '365px' }}
+            id='hashnodeCard'
             className='px-4 border-brand border-4 rounded-lg bg-white py-4 flex items-center flex-col gap-4'
           >
             {!loading ? (
@@ -92,7 +143,7 @@ const CardGeneratePage: NextPage = () => {
               </p>
             </div>
             <div className='flex flex-col items-center text-black mt-2'>
-              <h2 className='text-5xl font-bold'>
+              <h2 className='text-5xl font-bold mb-2'>
                 {!loading ? (
                   user.postsCount
                 ) : (
@@ -145,8 +196,9 @@ const CardGeneratePage: NextPage = () => {
         </div>
         <div className='flex justify-between gap-16 mt-4'>
           <button
-            disabled={error || loading}
-            className='bg-brand disabled:bg-gray-300 cursor-not-allowed text-white py-2 rounded px-3 flex gap-2 items-center'
+            onClick={downloadImage}
+            disabled={loading}
+            className='bg-brand disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 rounded px-3 flex gap-2 items-center'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -167,8 +219,9 @@ const CardGeneratePage: NextPage = () => {
             Download
           </button>
           <button
-            disabled={error || loading}
-            className='bg-brand disabled:bg-gray-300 cursor-not-allowed text-white py-2 flex gap-2 rounded px-3 items-center'
+            onClick={onShare}
+            disabled={loading}
+            className='bg-brand disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 rounded px-3 flex gap-2 items-center'
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -182,11 +235,51 @@ const CardGeneratePage: NextPage = () => {
               strokeLinejoin='round'
               className='w-5 h-5'
             >
-              <path d='M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z'></path>
+              <circle cx='18' cy='5' r='3'></circle>
+              <circle cx='6' cy='12' r='3'></circle>
+              <circle cx='18' cy='19' r='3'></circle>
+              <line x1='8.59' y1='13.51' x2='15.42' y2='17.49'></line>
+              <line x1='15.41' y1='6.51' x2='8.59' y2='10.49'></line>
             </svg>
-            Tweet
+            Share
           </button>
         </div>
+
+        {imgLink && (
+          <input
+            type='text'
+            className='block w-full max-w-sm mt-4'
+            value={imgLink}
+          />
+        )}
+
+        {imgLink && (
+          <>
+            <a
+              href={
+                'https://twitter.com/intent/tweet?text=My hashnode achievements. Created using https://hashnode-cards.vercel.app which is developed by @ChapagainAshik&url=' +
+                imgLink
+              }
+              className='twitter-share-button bg-brand disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 rounded px-3 flex gap-2 items-center'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                fill='none'
+                stroke='currentColor'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                className='w-5 h-5'
+              >
+                <path d='M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z'></path>
+              </svg>
+              Tweet
+            </a>
+          </>
+        )}
       </main>
     </>
   );
