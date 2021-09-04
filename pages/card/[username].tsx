@@ -138,7 +138,14 @@ const CardGeneratePage: NextPage = () => {
                 {!loading ? (
                   '@' + username
                 ) : (
-                  <Skeleton height={32} width={100} />
+                  <Skeleton height={24} width={100} />
+                )}
+              </p>
+              <p className='text-gray-600'>
+                {!loading ? (
+                  user.blogHandle + '.hashnode.dev'
+                ) : (
+                  <Skeleton height={24} width={100} />
                 )}
               </p>
             </div>

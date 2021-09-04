@@ -10,7 +10,8 @@ export default async function FetchHashnodeData(
     impressions = 0,
     postsCount = 0;
   let photo = '',
-    name = '';
+    name = '',
+    blogHandle = '';
   let loadMoreData = true;
   const apiRes = await fetch('https://api.hashnode.com', {
     method: 'POST',
@@ -25,6 +26,7 @@ export default async function FetchHashnodeData(
         numFollowing
         numFollowers
         numReactions
+        blogHandle
       }
     }`,
       variables: {
@@ -41,6 +43,7 @@ export default async function FetchHashnodeData(
       impressions = apiData.data.user.numReactions;
       photo = apiData.data.user.photo;
       name = apiData.data.user.name;
+      blogHandle = apiData.data.user.blogHandle;
       loadMoreData = true;
       let i = 0;
       while (loadMoreData) {
@@ -93,6 +96,7 @@ export default async function FetchHashnodeData(
     postsCount,
     photo,
     name,
+    blogHandle,
   };
   res.json(returnData);
 }
