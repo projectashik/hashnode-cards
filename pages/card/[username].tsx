@@ -159,7 +159,7 @@ const CardGeneratePage: NextPage = () => {
               </h2>
               <p>Articles Written</p>
             </div>
-            <div className='flex justify-between gap-10 my-6 text-gray-700'>
+            <div className='flex justify-between gap-5 my-6 text-gray-700'>
               <div className='flex flex-col items-center'>
                 <p className='text-4xl font-bold'>
                   {!loading ? (
