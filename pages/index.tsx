@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         </p>
         <form
           onSubmit={onSubmit}
-          className='flex flex-col items-center my-4 shadow-lg border gap-2 rounded p-4 w-full max-w-lg'
+          className='flex flex-col items-center my-10 shadow-lg border gap-2 rounded p-4 w-full max-w-lg'
         >
           <label htmlFor='username'>Hashnode Username</label>
           <input
