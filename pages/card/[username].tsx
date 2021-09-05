@@ -120,7 +120,10 @@ const CardGeneratePage: NextPage = () => {
             {!loading ? (
               user.photo && (
                 <Image
-                  src={user.photo}
+                  src={
+                    user.photo +
+                    '?w=400&h=400&fit=crop&crop=faces&auto=compress'
+                  }
                   alt={username ? username : 'Hashnode Card'}
                   width='100'
                   height='100'
