@@ -267,7 +267,7 @@ const CardGeneratePage: NextPage = () => {
           <>
             <a
               href={
-                'https://twitter.com/intent/tweet?text=My hashnode achievements. Created using https://hashnode-cards.vercel.app which is developed by @ChapagainAshik pic.twitter.com/JvCvCquBlf&url=' +
+                'https://twitter.com/intent/tweet?text=My hashnode achievements. Created using https://hashnode-cards.herokuapp.com which is developed by @ChapagainAshik&url=' +
                 imgLink
               }
               className='twitter-share-button bg-brand disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 rounded px-3 flex gap-2 items-center'
