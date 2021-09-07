@@ -3,11 +3,12 @@ import Head from 'next/head';
 import { NextPage } from 'next';
 import { Header } from '../../components/Header';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import html2canvas from 'html2canvas';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { toPng } from 'html-to-image';
 
 const CardGeneratePage: NextPage = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const CardGeneratePage: NextPage = () => {
   const [error, setError] = useState(false);
   const [imgLink, setImgLink] = useState('');
   const { username }: any = router.query;
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchBadges = async () => {
@@ -68,49 +70,48 @@ const CardGeneratePage: NextPage = () => {
   });
 
   const onShare = async () => {
-    // @ts-ignore
-    let container: HTMLElement = document.querySelector('#hashnodeCard');
+    if (ref.current === null) {
+      return;
+    }
     let base64Image: string = '';
-
-    // @ts-ignore
-    await html2canvas(container, {
-      useCORS: true,
-    }).then(function (canvas) {
-      base64Image = canvas.toDataURL('image/png').slice(22); // convert to dataURL
-    });
-    // upload the base64
-    const formData = new FormData();
-    // @ts-ignore
-    const key: string = process.env.NEXT_PUBLIC_IMGBB_STORAGE_KEY;
-    formData.append('image', base64Image);
-    formData.append('name', username);
-    formData.append('key', key);
-    const upload = axios
-      .post('https://api.imgbb.com/1/upload', formData)
-      .then((data) => {
-        navigator.clipboard.writeText(data.data.data.url);
-        setImgLink(data.data.data.url);
+    toPng(ref.current).then((dataUrl) => {
+      base64Image = dataUrl.slice(22);
+      console.log(base64Image);
+      const formData = new FormData();
+      // @ts-ignore
+      const key: string = process.env.NEXT_PUBLIC_IMGBB_STORAGE_KEY;
+      formData.append('image', base64Image);
+      formData.append('name', username);
+      formData.append('key', key);
+      const upload = axios
+        .post('https://api.imgbb.com/1/upload', formData)
+        .then((data) => {
+          navigator.clipboard.writeText(data.data.data.url);
+          setImgLink(data.data.data.url);
+        });
+      // @ts-ignore
+      toast.promise(upload, {
+        loading: 'Creating Shareable Image...',
+        success: 'Image URL copied to clipboard',
+        error: 'Error Creating Shareable Image',
       });
-    // @ts-ignore
-    toast.promise(upload, {
-      loading: 'Creating Shareable Image...',
-      success: 'Image URL copied to clipboard',
-      error: 'Error Creating Shareable Image',
     });
   };
 
   const downloadImage = async () => {
-    // @ts-ignore
-    let container: HTMLElement = document.querySelector('#hashnodeCard');
-    html2canvas(container, {
-      useCORS: true,
-    }).then(function (canvas) {
-      let link = document.createElement('a');
-      link.download = username + '.png';
-      link.href = canvas.toDataURL('image/png');
-      link.target = '_blank';
-      link.click();
-    });
+    if (ref.current === null) {
+      return;
+    }
+    toPng(ref.current, { cacheBust: true })
+      .then((dataUrl) => {
+        const link = document.createElement('a');
+        link.download = username + '.png';
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <>
@@ -143,6 +144,7 @@ const CardGeneratePage: NextPage = () => {
           <div
             style={{ width: '365px' }}
             id='hashnodeCard'
+            ref={ref}
             className='px-4 border-brand border-4 rounded-lg bg-white py-3 flex items-center flex-col gap-2'>
             {!loading ? (
               user.photo && (
@@ -240,8 +242,25 @@ const CardGeneratePage: NextPage = () => {
                       />
                     );
                   } else {
-                    const idRand = Math.random();
-                    return <div id={'svgContainer'}></div>;
+                    const idRand = badge.name
+                      .replaceAll('#', '')
+                      .replaceAll(' ', '-');
+                    const svgElement = document.querySelector(
+                      `#svgContainer${idRand}`
+                    );
+                    if (svgElement) {
+                      svgElement.innerHTML = badge.logo;
+                    }
+                    return (
+                      <div
+                        key={idRand}
+                        id={'svgContainer' + idRand}
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          objectFit: 'contain',
+                        }}></div>
+                    );
                   }
                 })
               ) : (
@@ -311,7 +330,7 @@ const CardGeneratePage: NextPage = () => {
           <input
             type='text'
             className='block w-full max-w-sm mt-4'
-            value={imgLink}
+            defaultValue={imgLink}
           />
         )}
 
