@@ -60,8 +60,10 @@ const CardGeneratePage: NextPage = () => {
       }
     };
     if (!user.name) {
-      fetchBadges();
       fetchData();
+    }
+    if (!badges) {
+      fetchBadges();
     }
   });
 
@@ -233,6 +235,7 @@ const CardGeneratePage: NextPage = () => {
                       />
                     );
                   } else {
+                    const idRand = Math.random();
                     return <div id={'svgContainer'}></div>;
                   }
                 })
