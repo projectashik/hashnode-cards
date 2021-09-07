@@ -22,18 +22,17 @@ const Home: NextPage = () => {
         <title>Hashnode Card Generator: Developed by Ashik and Lalit</title>
       </Head>
       <Header />
-      <main className='my-10 mx-5 flex flex-col items-center'>
-        <h1 className='sm:text-5xl text-4xl font-extrabold text-center md:mt-20 mt-8'>
+      <main className='flex flex-col items-center mx-5 my-10'>
+        <h1 className='mt-8 text-4xl font-extrabold text-center sm:text-5xl md:mt-20'>
           Hashnode Card
         </h1>
-        <p className='text-gray-700 mt-5 text-center max-w-lg'>
+        <p className='max-w-lg mt-5 text-center text-gray-700'>
           Generate awesome personalized cards which you can showcase to the
           community that contains all your awesome achievements on Hashnode
         </p>
         <form
           onSubmit={onSubmit}
-          className='flex flex-col items-center my-10 shadow-lg border gap-2 rounded p-4 w-full max-w-lg'
-        >
+          className='flex flex-col items-center w-full max-w-lg gap-2 p-4 my-10 border rounded shadow-lg'>
           <label htmlFor='username'>Hashnode Username</label>
           <input
             type='text'
@@ -48,8 +47,7 @@ const Home: NextPage = () => {
           <button
             className={
               'flex gap-2 hover:bg-blue-700 items-center w-full justify-center bg-brand text-white py-3 rounded'
-            }
-          >
+            }>
             <span className='text'>Generate Hashnode Card</span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -59,22 +57,20 @@ const Home: NextPage = () => {
               strokeWidth='2'
               strokeLinecap='round'
               strokeLinejoin='round'
-              className='feather feather-arrow-right w-5 h-5'
-            >
+              className='w-5 h-5 feather feather-arrow-right'>
               <line x1='5' y1='12' x2='19' y2='12'></line>
               <polyline points='12 5 19 12 12 19'></polyline>
             </svg>
           </button>
           <a
             href='https://cb-ashik.hashnode.dev/hashnode-cards'
-            className='text-brand text-sm'
-          >
+            className='text-sm text-brand'>
             Read full blog on hashnode
           </a>
         </form>
       </main>
       <footer className='flex justify-center'>
-        Made with <span className='text-red-500 px-1'>&hearts;</span> by
+        Made with <span className='px-1 text-red-500'>&hearts;</span> by
         <a href='https://github.com/projectashik'>&nbsp;Ashik Chapagain</a>
         &nbsp;and
         <a href='https://github.com/lalit2005'>&nbsp;Lalit Kishore</a>
