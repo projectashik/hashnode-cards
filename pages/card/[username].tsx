@@ -231,7 +231,11 @@ const CardGeneratePage: NextPage = () => {
                       <img
                         key={Math.random()}
                         src={badge.logo}
-                        style={{ width: '50px', height: '50px' }}
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          objectFit: 'contain',
+                        }}
                         alt={badge.name}
                       />
                     );
