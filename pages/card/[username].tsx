@@ -13,11 +13,33 @@ const CardGeneratePage: NextPage = () => {
   const router = useRouter();
   const [user, setUser] = useState<any>({});
   const [loading, setLoading] = useState(true);
+  const [badgeLoading, setBadgeLoading] = useState(false);
+  const [badges, setBadges] = useState<any[]>([]);
   const [error, setError] = useState(false);
   const [imgLink, setImgLink] = useState('');
   const { username }: any = router.query;
 
   useEffect(() => {
+    const fetchBadges = async () => {
+      setBadgeLoading(true);
+      const response = await fetch('http://localhost:8000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+      const responseJson = await response.json();
+      if (responseJson.badges) {
+        setBadges(responseJson.badges);
+        console.log('Badges Loaded');
+      } else {
+        console.log('Badges not Loaded');
+      }
+      setBadgeLoading(false);
+    };
     const fetchData = async () => {
       const apiRes = await fetch('/api/hashnode', {
         method: 'POST',
@@ -35,6 +57,7 @@ const CardGeneratePage: NextPage = () => {
       }
     };
     if (!user.name) {
+      fetchBadges();
       fetchData();
     }
   });
@@ -115,7 +138,7 @@ const CardGeneratePage: NextPage = () => {
           <div
             style={{ width: '365px' }}
             id='hashnodeCard'
-            className='px-4 border-brand border-4 rounded-lg bg-white py-4 flex items-center flex-col gap-4'
+            className='px-4 border-brand border-4 rounded-lg bg-white py-3 flex items-center flex-col gap-2'
           >
             {!loading ? (
               user.photo && (
@@ -152,8 +175,8 @@ const CardGeneratePage: NextPage = () => {
                 )}
               </p>
             </div>
-            <div className='flex flex-col items-center text-black mt-2'>
-              <h2 className='text-5xl font-bold mb-2'>
+            <div className='flex flex-col items-center text-black mt-1'>
+              <h2 className='text-5xl font-bold mb-1'>
                 {!loading ? (
                   user.postsCount
                 ) : (
@@ -162,7 +185,7 @@ const CardGeneratePage: NextPage = () => {
               </h2>
               <p>Articles Written</p>
             </div>
-            <div className='flex justify-between gap-5 my-6 text-gray-700'>
+            <div className='flex justify-between gap-5 my-2 text-gray-700'>
               <div className='flex flex-col items-center'>
                 <p className='text-4xl font-bold'>
                   {!loading ? (
@@ -193,6 +216,29 @@ const CardGeneratePage: NextPage = () => {
                 </p>
                 <p>Followers</p>
               </div>
+            </div>
+            <div className='flex flex-wrap justify-center gap-2 w-full'>
+              {badges ? (
+                badges.map((badge) => {
+                  if (badge.type === 'img') {
+                    return (
+                      <Image
+                        key={Math.random()}
+                        src={badge.logo}
+                        width={50}
+                        height={50}
+                        alt={badge.name}
+                      />
+                    );
+                  } else {
+                    return 'Fcuk';
+                  }
+                })
+              ) : (
+                <div>
+                  <Skeleton height={40} width={40}></Skeleton>
+                </div>
+              )}
             </div>
             <div className='flex flex-col items-center'>
               <Image
@@ -291,6 +337,12 @@ const CardGeneratePage: NextPage = () => {
           </>
         )}
       </main>
+      <footer className='flex justify-center'>
+        Made with <span className='text-red-500 px-1'>&hearts;</span> by
+        <a href='https://github.com/projectashik'>&nbsp;Ashik Chapagain</a>
+        &nbsp;and
+        <a href='https://github.com/lalit2005'>&nbsp;Lalit Kishore</a>
+      </footer>
     </>
   );
 };
