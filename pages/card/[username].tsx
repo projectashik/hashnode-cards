@@ -22,15 +22,18 @@ const CardGeneratePage: NextPage = () => {
   useEffect(() => {
     const fetchBadges = async () => {
       setBadgeLoading(true);
-      const response = await fetch('http://localhost:8000', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: username,
-        }),
-      });
+      const response = await fetch(
+        'https://hashnode-badge-scraper.herokuapp.com',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+          }),
+        }
+      );
       const responseJson = await response.json();
       if (responseJson.badges) {
         setBadges(responseJson.badges);
@@ -109,7 +112,6 @@ const CardGeneratePage: NextPage = () => {
     <>
       <Head>
         <title>Hashnode Card Generator - {username}</title>
-        <script async src='https://platform.twitter.com/widgets.js'></script>
       </Head>
       <Header />
       <main className='container mx-auto md:px-8 px-4 flex flex-col items-center py-4'>
@@ -217,7 +219,7 @@ const CardGeneratePage: NextPage = () => {
                 <p>Followers</p>
               </div>
             </div>
-            <div className='flex flex-wrap justify-center gap-2 w-full'>
+            <div className='flex flex-wrap justify-center gap-2 w-full my-2'>
               {badges ? (
                 badges.map((badge) => {
                   if (badge.type === 'img') {
@@ -231,7 +233,7 @@ const CardGeneratePage: NextPage = () => {
                       />
                     );
                   } else {
-                    return 'Fcuk';
+                    return <div id={'svgContainer'}></div>;
                   }
                 })
               ) : (
