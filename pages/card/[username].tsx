@@ -99,10 +99,12 @@ const CardGeneratePage: NextPage = () => {
     });
   };
 
-  const downloadImage = () => {
+  const downloadImage = async () => {
     // @ts-ignore
     let container: HTMLElement = document.querySelector('#hashnodeCard');
-    html2canvas(container).then(function (canvas) {
+    html2canvas(container, {
+      useCORS: true,
+    }).then(function (canvas) {
       let link = document.createElement('a');
       link.download = username + '.png';
       link.href = canvas.toDataURL('image/png');
