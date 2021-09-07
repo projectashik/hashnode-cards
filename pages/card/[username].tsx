@@ -62,7 +62,7 @@ const CardGeneratePage: NextPage = () => {
     if (!user.name) {
       fetchData();
     }
-    if (!badges) {
+    if (badges.length === 0) {
       fetchBadges();
     }
   });
@@ -229,8 +229,7 @@ const CardGeneratePage: NextPage = () => {
                       <img
                         key={Math.random()}
                         src={badge.logo}
-                        width={50}
-                        height={50}
+                        style={{ width: '50px', height: '50px' }}
                         alt={badge.name}
                       />
                     );
