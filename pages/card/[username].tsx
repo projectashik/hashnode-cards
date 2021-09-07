@@ -223,7 +223,7 @@ const CardGeneratePage: NextPage = () => {
               </div>
             </div>
             <div className='flex flex-wrap justify-center gap-2 w-full my-2'>
-              {badges ? (
+              {badges.length > 0 ? (
                 badges.map((badge) => {
                   if (badge.type === 'img') {
                     return (
