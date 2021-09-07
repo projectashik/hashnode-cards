@@ -144,7 +144,8 @@ const CardGeneratePage: NextPage = () => {
             className='px-4 border-brand border-4 rounded-lg bg-white py-3 flex items-center flex-col gap-2'>
             {!loading ? (
               user.photo && (
-                <Image
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
                   src={
                     user.photo +
                     '?w=400&h=400&fit=crop&crop=faces&auto=compress'
@@ -224,7 +225,8 @@ const CardGeneratePage: NextPage = () => {
                 badges.map((badge) => {
                   if (badge.type === 'img') {
                     return (
-                      <Image
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
                         key={Math.random()}
                         src={badge.logo}
                         width={50}
