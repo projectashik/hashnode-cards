@@ -181,7 +181,7 @@ const CardGeneratePage: NextPage = () => {
                 )}
               </p>
               <p className='text-gray-600'>
-                {badges ? url : <Skeleton height={24} width={100} />}
+                {badges.length > 0 ? url : <Skeleton height={24} width={100} />}
               </p>
             </div>
             <div className='flex flex-col items-center mb-2 text-black mt-1'>
