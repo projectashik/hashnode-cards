@@ -196,7 +196,7 @@ const CardGeneratePage: NextPage = () => {
               </h2>
               <p>Articles Written</p>
             </div>
-            <div className='flex justify-between gap-5 mt-2 mb-4 text-gray-700'>
+            <div className='flex justify-between mt-2 mb-4 text-gray-700'>
               <div className='flex flex-col items-center mr-5'>
                 <p className='text-4xl font-bold'>
                   {!loading ? (
@@ -302,7 +302,7 @@ const CardGeneratePage: NextPage = () => {
               strokeWidth='2'
               strokeLinecap='round'
               strokeLinejoin='round'
-              className='w-5 h-5'>
+              className='w-5 h-5 mr-2'>
               <path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'></path>
               <polyline points='7 10 12 15 17 10'></polyline>
               <line x1='12' y1='15' x2='12' y2='3'></line>
@@ -312,7 +312,7 @@ const CardGeneratePage: NextPage = () => {
           <button
             onClick={onShare}
             disabled={loading}
-            className='bg-brand disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 rounded px-3 flex gap-2 items-center'>
+            className='bg-brand disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-2 rounded px-3 flex items-center'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'
@@ -323,7 +323,7 @@ const CardGeneratePage: NextPage = () => {
               strokeWidth='2'
               strokeLinecap='round'
               strokeLinejoin='round'
-              className='w-5 h-5'>
+              className='w-5 h-5 mr-2'>
               <circle cx='18' cy='5' r='3'></circle>
               <circle cx='6' cy='12' r='3'></circle>
               <circle cx='18' cy='19' r='3'></circle>

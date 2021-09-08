@@ -32,8 +32,10 @@ const Home: NextPage = () => {
         </p>
         <form
           onSubmit={onSubmit}
-          className='flex flex-col items-center w-full max-w-lg gap-2 p-4 my-10 border rounded shadow-lg'>
-          <label htmlFor='username'>Hashnode Username</label>
+          className='flex flex-col items-center w-full max-w-lg p-4 my-10 border rounded shadow-lg'>
+          <label htmlFor='username' className='mb-2'>
+            Hashnode Username
+          </label>
           <input
             type='text'
             value={username}
@@ -46,9 +48,9 @@ const Home: NextPage = () => {
           <p className='self-start text-sm text-red-500'>{error && error}</p>
           <button
             className={
-              'flex gap-2 hover:bg-blue-700 items-center w-full justify-center bg-brand text-white py-3 rounded'
+              'flex hover:bg-blue-700 items-center w-full justify-center bg-brand text-white py-3 rounded'
             }>
-            <span className='text'>Generate Hashnode Card</span>
+            <span className='text mr-2'>Generate Hashnode Card</span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 24 24'
