@@ -14,6 +14,8 @@ const Home: NextPage = () => {
       setError('Username is required');
       return false;
     }
+    // @ts-ignore
+    window.umami('card-generated');
     router.push(`/card/${username}`);
   };
   return (
@@ -51,7 +53,7 @@ const Home: NextPage = () => {
           </p>
           <button
             className={
-              'flex hover:bg-blue-700 items-center mb-2 w-full justify-center bg-brand text-white py-3 rounded'
+              ' flex hover:bg-blue-700 items-center mb-2 w-full justify-center bg-brand text-white py-3 rounded'
             }>
             <span className='text mr-2'>Generate Hashnode Card</span>
             <svg

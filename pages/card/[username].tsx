@@ -15,6 +15,7 @@ const CardGeneratePage: NextPage = () => {
   const [loading, setLoading] = useState(true);
   const [badgeLoading, setBadgeLoading] = useState(false);
   const [badges, setBadges] = useState<any[]>([]);
+  const [url, setURL] = useState('');
   const [error, setError] = useState(false);
   const [imgLink, setImgLink] = useState('');
   const { username }: any = router.query;
@@ -38,6 +39,7 @@ const CardGeneratePage: NextPage = () => {
       const responseJson = await response.json();
       if (responseJson.badges) {
         setBadges(responseJson.badges);
+        setURL(responseJson.domain);
         console.log('Badges Loaded');
       } else {
         console.log('Badges not Loaded');
@@ -179,11 +181,7 @@ const CardGeneratePage: NextPage = () => {
                 )}
               </p>
               <p className='text-gray-600'>
-                {!loading ? (
-                  user.blogHandle + '.hashnode.dev'
-                ) : (
-                  <Skeleton height={24} width={100} />
-                )}
+                {badges ? url : <Skeleton height={24} width={100} />}
               </p>
             </div>
             <div className='flex flex-col items-center mb-2 text-black mt-1'>

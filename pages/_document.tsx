@@ -12,6 +12,7 @@ class MyDocument extends Document {
             rel='stylesheet'
             crossOrigin='anonymous'
           />
+          <script async defer data-website-id="8492e846-03a2-4675-97b3-bf197339fac5" src="https://hashnode-cards-analytics.vercel.app/umami.js"></script>
         </Head>
         <body>
           <Main />
