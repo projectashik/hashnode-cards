@@ -5,7 +5,6 @@ import { Header } from '../../components/Header';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import html2canvas from 'html2canvas';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { toPng } from 'html-to-image';
@@ -121,8 +120,8 @@ const CardGeneratePage: NextPage = () => {
       <Header />
       <main className='container mx-auto md:px-8 px-4 flex flex-col items-center py-4'>
         {loading && (
-          <div className='flex flex-col my-2 gap-2 items-center'>
-            <p>Loading your data</p>
+          <div className='flex flex-col my-2 items-center'>
+            <p className='mb-2'>Loading your data</p>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               width='24'
@@ -133,7 +132,7 @@ const CardGeneratePage: NextPage = () => {
               strokeWidth='2'
               strokeLinecap='round'
               strokeLinejoin='round'
-              className='feather feather-refresh-cw animate-spin'>
+              className='feather feather-refresh-cw animate-spin mb-2'>
               <polyline points='23 4 23 10 17 10'></polyline>
               <polyline points='1 20 1 14 7 14'></polyline>
               <path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'></path>
@@ -145,7 +144,7 @@ const CardGeneratePage: NextPage = () => {
             style={{ width: '365px' }}
             id='hashnodeCard'
             ref={ref}
-            className='px-4 border-brand border-4 rounded-lg bg-white py-3 flex items-center flex-col gap-2'>
+            className='px-4 border-brand border-4 rounded-lg bg-white py-3 flex items-center flex-col'>
             {!loading ? (
               user.photo && (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -157,13 +156,18 @@ const CardGeneratePage: NextPage = () => {
                   alt={username ? username : 'Hashnode Card'}
                   width='100'
                   height='100'
-                  className='rounded-full shadow-lg'
+                  className='rounded-full shadow-lg mb-2'
                 />
               )
             ) : (
-              <Skeleton width={100} height={100} circle={true} />
+              <Skeleton
+                width={100}
+                height={100}
+                className='mb-2'
+                circle={true}
+              />
             )}
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center mb-2'>
               <p className='text-2xl font-bold'>
                 {!loading ? user?.name : <Skeleton height={32} width={180} />}
               </p>
@@ -182,7 +186,7 @@ const CardGeneratePage: NextPage = () => {
                 )}
               </p>
             </div>
-            <div className='flex flex-col items-center text-black mt-1'>
+            <div className='flex flex-col items-center mb-2 text-black mt-1'>
               <h2 className='text-5xl font-bold mb-1'>
                 {!loading ? (
                   user.postsCount
@@ -192,8 +196,8 @@ const CardGeneratePage: NextPage = () => {
               </h2>
               <p>Articles Written</p>
             </div>
-            <div className='flex justify-between gap-5 my-2 text-gray-700'>
-              <div className='flex flex-col items-center'>
+            <div className='flex justify-between gap-5 mt-2 mb-4 text-gray-700'>
+              <div className='flex flex-col items-center mr-5'>
                 <p className='text-4xl font-bold'>
                   {!loading ? (
                     user.following
@@ -203,7 +207,7 @@ const CardGeneratePage: NextPage = () => {
                 </p>
                 <p>Following</p>
               </div>
-              <div className='flex flex-col items-center'>
+              <div className='flex flex-col items-center mr-5'>
                 <p className='text-4xl font-bold'>
                   {!loading ? (
                     user.impressions
@@ -224,9 +228,9 @@ const CardGeneratePage: NextPage = () => {
                 <p>Followers</p>
               </div>
             </div>
-            <div className='flex flex-wrap justify-center gap-2 w-full my-2'>
+            <div className='flex flex-wrap justify-center w-full mt-2 mb-4'>
               {badges.length > 0 ? (
-                badges.map((badge) => {
+                badges.map((badge, index) => {
                   if (badge.type === 'img') {
                     return (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -238,6 +242,9 @@ const CardGeneratePage: NextPage = () => {
                           height: '50px',
                           objectFit: 'contain',
                         }}
+                        className={
+                          ([4, 9].includes(index) ? 'mx-0' : 'mx-1') + ' mb-2'
+                        }
                         alt={badge.name}
                       />
                     );
@@ -255,6 +262,7 @@ const CardGeneratePage: NextPage = () => {
                       <div
                         key={idRand}
                         id={'svgContainer' + idRand}
+                        className={[4, 9].includes(index) ? 'mx-0' : 'mx-1'}
                         style={{
                           width: '50px',
                           height: '50px',
@@ -279,7 +287,7 @@ const CardGeneratePage: NextPage = () => {
             </div>
           </div>
         </div>
-        <div className='flex justify-between gap-16 mt-4'>
+        <div className='flex justify-between mt-4' style={{ width: '365px' }}>
           <button
             onClick={downloadImage}
             disabled={loading}
