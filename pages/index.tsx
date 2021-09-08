@@ -41,14 +41,17 @@ const Home: NextPage = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             className={
-              'border rounded block w-full p-3 ' + (error && 'border-red-500 ')
+              'border rounded block w-full p-3 mb-2 ' +
+              (error && 'border-red-500 ')
             }
             placeholder='Enter you hashnode username'
           />
-          <p className='self-start text-sm text-red-500'>{error && error}</p>
+          <p className='self-start text-sm text-red-500 mb-2 '>
+            {error && error}
+          </p>
           <button
             className={
-              'flex hover:bg-blue-700 items-center w-full justify-center bg-brand text-white py-3 rounded'
+              'flex hover:bg-blue-700 items-center mb-2 w-full justify-center bg-brand text-white py-3 rounded'
             }>
             <span className='text mr-2'>Generate Hashnode Card</span>
             <svg
