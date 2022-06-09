@@ -35,7 +35,7 @@ export default async function FetchHashnodeData(
     }),
   });
   const apiData = await apiRes.json();
-  console.log(apiData);
+  // console.log(apiData);
   if (apiData.data) {
     if (apiData.data.user) {
       following = apiData.data.user.numFollowing;
@@ -77,7 +77,7 @@ export default async function FetchHashnodeData(
             if (postsJson.data.user.publication.posts) {
               if (postsJson.data.user.publication.posts.length > 0) {
                 postsCount += postsJson.data.user.publication.posts.length;
-                console.log(postsCount);
+                // console.log(postsCount);
                 i++;
               } else {
                 loadMoreData = false;

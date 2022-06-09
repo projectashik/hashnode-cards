@@ -14,8 +14,6 @@ const Home: NextPage = () => {
       setError('Username is required');
       return false;
     }
-    // @ts-ignore
-    window.umami('card-generated');
     router.push(`/card/${username}`);
   };
   return (

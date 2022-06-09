@@ -24,26 +24,26 @@ const CardGeneratePage: NextPage = () => {
   useEffect(() => {
     const fetchBadges = async () => {
       setBadgeLoading(true);
-      const response = await fetch(
-        'https://hashnode-badge-scraper.herokuapp.com',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: username,
-          }),
-        }
-      );
+      const response = await fetch('/api/scrape', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
       const responseJson = await response.json();
-      if (responseJson.badges) {
-        setBadges(responseJson.badges);
-        setURL(responseJson.domain);
-        console.log('Badges Loaded');
-      } else {
-        console.log('Badges not Loaded');
+      console.log({ response, responseJson });
+      if (response.status === 200) {
+        if (responseJson.url) {
+          setURL(responseJson.url);
+        }
+        if (responseJson.badges) {
+          setBadges(responseJson.badges);
+        }
       }
+
       setBadgeLoading(false);
     };
     const fetchData = async () => {
@@ -65,7 +65,7 @@ const CardGeneratePage: NextPage = () => {
     if (!user.name) {
       fetchData();
     }
-    if (badges.length === 0) {
+    if (!url && username) {
       fetchBadges();
     }
   });
@@ -121,7 +121,8 @@ const CardGeneratePage: NextPage = () => {
       </Head>
       <Header />
       <main className='container mx-auto md:px-8 px-4 flex flex-col items-center py-4'>
-        {loading && (
+        {error && !loading && 'Error Occurred'}
+        {loading && !error && (
           <div className='flex flex-col my-2 items-center'>
             <p className='mb-2'>Loading your data</p>
             <svg
@@ -181,7 +182,7 @@ const CardGeneratePage: NextPage = () => {
                 )}
               </p>
               <p className='text-gray-600'>
-                {badges.length > 0 ? url : <Skeleton height={24} width={100} />}
+                {url ? url : <Skeleton height={24} width={100} />}
               </p>
             </div>
             <div className='flex flex-col items-center mb-2 text-black mt-1'>
