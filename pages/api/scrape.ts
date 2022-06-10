@@ -38,12 +38,13 @@ export default async function ScrapeHashnodeData(
   const badgesRawData = await getRawData('https://' + url + '/badges');
   const badgesParsedData = load(badgesRawData);
   const badges = badgesParsedData(
-    '#__next > div > div > div > div.css-rsvr7z img'
+    '#__next > div > div > div > div > div.css-si9wsk > span > img'
   );
   const badgesSrcs = badges.toArray().map((badge) => {
     // @ts-ignore
     return badge.attribs.src;
   });
+  console.log(badgesSrcs);
   res.json({
     url,
     badges: badgesSrcs,

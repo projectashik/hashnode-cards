@@ -230,45 +230,22 @@ const CardGeneratePage: NextPage = () => {
             <div className='flex flex-wrap justify-center w-full mt-2 mb-4'>
               {badges.length > 0 ? (
                 badges.map((badge, index) => {
-                  if (badge.type === 'img') {
-                    return (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        key={Math.random()}
-                        src={badge.logo}
-                        style={{
-                          width: '50px',
-                          height: '50px',
-                          objectFit: 'contain',
-                        }}
-                        className={
-                          ([4, 9].includes(index) ? 'mx-0' : 'mx-1') + ' mb-2'
-                        }
-                        alt={badge.name}
-                      />
-                    );
-                  } else {
-                    const idRand = badge.name
-                      .replaceAll('#', '')
-                      .replaceAll(' ', '-');
-                    const svgElement = document.querySelector(
-                      `#svgContainer${idRand}`
-                    );
-                    if (svgElement) {
-                      svgElement.innerHTML = badge.logo;
-                    }
-                    return (
-                      <div
-                        key={idRand}
-                        id={'svgContainer' + idRand}
-                        className={[4, 9].includes(index) ? 'mx-0' : 'mx-1'}
-                        style={{
-                          width: '50px',
-                          height: '50px',
-                          objectFit: 'contain',
-                        }}></div>
-                    );
-                  }
+                  return (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={Math.random()}
+                      src={badge}
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        objectFit: 'contain',
+                      }}
+                      className={
+                        ([4, 9].includes(index) ? 'mx-0' : 'mx-1') + ' mb-2'
+                      }
+                      alt={badge.name}
+                    />
+                  );
                 })
               ) : (
                 <div>
